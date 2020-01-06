@@ -2,4 +2,6 @@
     <string name="app_name">ToDolist</string>
     <string name="add_button">Add</string>
     <string name="input_text">What should I do?</string>
+    <string name="input_name">Enter a name for the task</string>
+    <string name="input_desc">Enter details</string>
 </resources>

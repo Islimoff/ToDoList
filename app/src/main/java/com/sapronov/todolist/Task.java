@@ -9,6 +9,12 @@ public class Task {
     private Date create;
     private Date closed;
 
+    public Task(String name, String desc) {
+        this.name = name;
+        this.desc = desc;
+        create=new Date();
+    }
+
     public String getName() {
         return name;
     }
@@ -23,5 +29,9 @@ public class Task {
 
     public Date getClosed() {
         return closed;
+    }
+
+    public void setClosed(Date closed) {
+        this.closed = closed;
     }
 }

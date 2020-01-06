@@ -42,7 +42,7 @@ class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull TaskHolder holder, int position) {
-        final Task task = this.tasks.get(position);
+        final Task task = tasks.get(position);
         TextView text = holder.view.findViewById(R.id.info);
         text.setText(task.getName());
         text.setOnClickListener(this::showTask);

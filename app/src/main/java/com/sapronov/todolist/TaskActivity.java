@@ -1,5 +1,11 @@
 package com.sapronov.todolist;
 
- public class TaskActivity {
+import androidx.fragment.app.Fragment;
 
+public class TaskActivity extends BaseActivity {
+
+    @Override
+    public Fragment loadFragment() {
+        return new TaskFragment();
+    }
 }
