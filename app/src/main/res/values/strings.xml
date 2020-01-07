@@ -4,4 +4,6 @@
     <string name="input_text">What should I do?</string>
     <string name="input_name">Enter a name for the task</string>
     <string name="input_desc">Enter details</string>
+    <string name="add_item">Add</string>
+    <string name="delete_item">Delete</string>
 </resources>

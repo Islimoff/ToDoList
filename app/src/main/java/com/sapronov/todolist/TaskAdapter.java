@@ -10,15 +10,14 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.List;
+import java.util.Calendar;
+import java.util.Locale;
 
 class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskHolder> {
 
-    private List<Task> tasks;
     private Context parent;
 
-    public TaskAdapter(List<Task> tasks, Context parent) {
-        this.tasks = tasks;
+    public TaskAdapter( Context parent) {
         this.parent = parent;
     }
 
@@ -42,19 +41,27 @@ class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull TaskHolder holder, int position) {
-        final Task task = tasks.get(position);
+        final Task task = Store.getStore().getTask(position);
         TextView text = holder.view.findViewById(R.id.info);
+        TextView createDate = holder.view.findViewById(R.id.create_date);
         text.setText(task.getName());
+        createDate.setText(format(task.getCreate()));
         text.setOnClickListener(this::showTask);
+    }
+
+    private String format(Calendar date){
+        return String.format(Locale.getDefault(),"%02d.%02d.%d",
+                date.get(Calendar.DAY_OF_MONTH),date.get(Calendar.MONTH),date.get(Calendar.YEAR));
+
     }
 
     @Override
     public int getItemCount() {
-        return this.tasks.size();
+        return Store.getStore().size();
     }
 
     private void showTask(View view) {
-        Intent intent = new Intent(parent, TaskActivity.class);
+        Intent intent = new Intent(parent, TaskFormActivity.class);
         parent.startActivity(intent);
     }
 }

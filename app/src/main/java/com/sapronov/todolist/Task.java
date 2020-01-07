@@ -1,18 +1,19 @@
 package com.sapronov.todolist;
 
+import java.util.Calendar;
 import java.util.Date;
 
 public class Task {
 
     private String name;
     private String desc;
-    private Date create;
+    private Calendar create;
     private Date closed;
 
     public Task(String name, String desc) {
         this.name = name;
         this.desc = desc;
-        create=new Date();
+        create=Calendar.getInstance();
     }
 
     public String getName() {
@@ -23,15 +24,15 @@ public class Task {
         return desc;
     }
 
-    public Date getCreate() {
-        return create;
-    }
-
     public Date getClosed() {
         return closed;
     }
 
     public void setClosed(Date closed) {
         this.closed = closed;
+    }
+
+    public Calendar getCreate() {
+        return create;
     }
 }

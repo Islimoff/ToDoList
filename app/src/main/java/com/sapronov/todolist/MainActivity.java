@@ -1,40 +1,46 @@
 package com.sapronov.todolist;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-
-import java.util.ArrayList;
-import java.util.List;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity {
-
-    private RecyclerView recycler;
-    private List<Task>tasks;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Button add =findViewById(R.id.button);
-        add.setOnClickListener(this::addBtn);
-        recycler = findViewById(R.id.items_list);
-        recycler.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        tasks=new ArrayList<>();
-//        updateUI();
+        RecyclerView recycler = findViewById(R.id.items_list);
+        recycler.setLayoutManager(new LinearLayoutManager(this));
+        recycler.setAdapter(new TaskAdapter(this));
     }
 
-    private void addBtn(View view){
-        Intent intent = new Intent(this, TaskActivity.class);
-        startActivity(intent);
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater=getMenuInflater();
+        inflater.inflate(R.menu.menu,menu);
+        return true;
     }
 
-    private void updateUI() {
-        recycler.setAdapter(new TaskAdapter(tasks,this));
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.add_item:
+                Intent intent = new Intent(this, TaskFormActivity.class);
+                startActivity(intent);
+                return true;
+            case R.id.delete_item:
+//                DialogFragment dialog = new ConfirmDeleteExamsListFragment();
+//                dialog.show(getSupportFragmentManager(), "dialog_tag");
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
