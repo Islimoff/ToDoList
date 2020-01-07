@@ -46,7 +46,11 @@ class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskHolder> {
         TextView createDate = holder.view.findViewById(R.id.create_date);
         text.setText(task.getName());
         createDate.setText(format(task.getCreate()));
-        text.setOnClickListener(this::showTask);
+        text.setOnClickListener(view ->{
+            Intent intent = new Intent(parent, TaskDetailsActivity.class);
+            intent.putExtra("position",position);
+            parent.startActivity(intent);
+        } );
     }
 
     private String format(Calendar date){
@@ -58,10 +62,5 @@ class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskHolder> {
     @Override
     public int getItemCount() {
         return Store.getStore().size();
-    }
-
-    private void showTask(View view) {
-        Intent intent = new Intent(parent, TaskFormActivity.class);
-        parent.startActivity(intent);
     }
 }
