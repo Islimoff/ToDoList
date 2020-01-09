@@ -8,11 +8,12 @@ public class Task {
     private String name;
     private String desc;
     private Calendar create;
-    private Date closed;
+    private boolean closed;
 
     public Task(String name, String desc) {
         this.name = name;
         this.desc = desc;
+        closed=false;
         create=Calendar.getInstance();
     }
 
@@ -24,15 +25,20 @@ public class Task {
         return desc;
     }
 
-    public Date getClosed() {
+    public boolean getClosed() {
         return closed;
     }
 
-    public void setClosed(Date closed) {
+    public void setClosed(boolean closed) {
         this.closed = closed;
     }
 
     public Calendar getCreate() {
         return create;
+    }
+
+    public void editTask(String name,String desc){
+        this.name = name;
+        this.desc = desc;
     }
 }

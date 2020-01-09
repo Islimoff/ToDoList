@@ -14,11 +14,13 @@ import androidx.fragment.app.Fragment;
 
 public class TaskDetailsFragment extends Fragment {
 
+    private int position;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.task_details, container, false);
-        int position=getActivity().getIntent().getIntExtra("position",0);
+        position=getActivity().getIntent().getIntExtra("position",0);
         Task task=Store.getStore().getTask(position);
         TextView detailName=view.findViewById(R.id.detail_name);
         TextView detailDesc=view.findViewById(R.id.detail_desc);
@@ -37,6 +39,7 @@ public class TaskDetailsFragment extends Fragment {
 
     private void editBtn(View view){
         Intent intent = new Intent(getActivity(), TaskFormActivity.class);
+        intent.putExtra("position",position);
         startActivity(intent);
     }
 }

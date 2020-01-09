@@ -2,6 +2,7 @@ package com.sapronov.todolist;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -11,7 +12,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements DeleteTasksFragment.ConfirmDeleteTasksListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,23 +25,35 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater=getMenuInflater();
-        inflater.inflate(R.menu.menu,menu);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.add_item:
                 Intent intent = new Intent(this, TaskFormActivity.class);
                 startActivity(intent);
                 return true;
             case R.id.delete_item:
-//                DialogFragment dialog = new ConfirmDeleteExamsListFragment();
-//                dialog.show(getSupportFragmentManager(), "dialog_tag");
+                DialogFragment dialog = new DeleteTasksFragment();
+                dialog.show(getSupportFragmentManager(), "dialog_tag");
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onPositiveDialogClick(DialogFragment dialog) {
+        Store.getStore().deleteAllTasks();
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onNegativeDialogClick(DialogFragment dialog) {
+        return;
     }
 }

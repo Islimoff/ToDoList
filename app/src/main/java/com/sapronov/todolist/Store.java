@@ -25,4 +25,8 @@ public class Store {
     public int size(){
         return tasks.size();
     }
+
+    public void deleteAllTasks(){
+        tasks.clear();
+    }
 }

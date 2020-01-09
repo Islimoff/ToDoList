@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -51,6 +52,10 @@ class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskHolder> {
             intent.putExtra("position",position);
             parent.startActivity(intent);
         } );
+        CheckBox done=holder.view.findViewById(R.id.checkBox);
+        done.setChecked(task.getClosed());
+        done.setOnCheckedChangeListener(((view, isClosed) -> task.setClosed(isClosed)));
+
     }
 
     private String format(Calendar date){
