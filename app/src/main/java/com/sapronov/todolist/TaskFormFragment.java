@@ -30,7 +30,7 @@ public class TaskFormFragment extends Fragment {
         desc = view.findViewById(R.id.task_desc);
         save.setOnClickListener(this::saveBtn);
         if(position!=-1){
-            Task task=Store.getStore().getTask(position);
+            Task task=Store.getStore().get(position);
             name.setText(task.getName());
             desc.setText(task.getDesc());
         }
@@ -49,7 +49,7 @@ public class TaskFormFragment extends Fragment {
 
     private void selectedVariant(){
         if (position != -1) {
-            Store.getStore().getTask(position)
+            Store.getStore().get(position)
                     .editTask(name.getText().toString(),desc.getText().toString());
         }else {
             Store.getStore()

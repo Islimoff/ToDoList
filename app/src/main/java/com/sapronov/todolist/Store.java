@@ -18,7 +18,7 @@ public class Store {
         tasks.add(task);
     }
 
-    public Task getTask(int index){
+    public Task get(int index){
         return tasks.get(index);
     }
 
@@ -28,5 +28,9 @@ public class Store {
 
     public void deleteAllTasks(){
         tasks.clear();
+    }
+
+    public List<Task> getAll(){
+        return tasks;
     }
 }
