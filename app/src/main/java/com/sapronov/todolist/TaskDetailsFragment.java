@@ -13,6 +13,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 public class TaskDetailsFragment extends Fragment {
 
@@ -45,8 +46,10 @@ public class TaskDetailsFragment extends Fragment {
         while (cursor.moveToNext()) {
             Log.d("ContentProvider", cursor.getString(1));
         }
-        Intent intent = new Intent(getActivity(), TaskFormActivity.class);
-        intent.putExtra("position",position);
-        startActivity(intent);
+        FragmentManager fm = getActivity().getSupportFragmentManager();
+        fm.beginTransaction()
+                .replace(R.id.content, new TaskFormFragment())
+                .addToBackStack(null)
+                .commit();
     }
 }

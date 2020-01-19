@@ -23,8 +23,6 @@
         </activity>
         <activity android:name=".TaskFormActivity">
         </activity>
-        <activity android:name=".TaskDetailsActivity">
-        </activity>
     </application>
 
 </manifest>
