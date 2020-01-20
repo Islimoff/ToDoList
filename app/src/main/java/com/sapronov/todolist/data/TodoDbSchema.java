@@ -9,8 +9,8 @@ public class TodoDbSchema {
         public static final class Cols {
 
             public static final String NAME = "name";
-            public static final String DESC = "desc";
-            public static final boolean CLOSED = false;
+            public static final String TITLE = "title";
+            public static final String CLOSED = "closed";
         }
     }
 }

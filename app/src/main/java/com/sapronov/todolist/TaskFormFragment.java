@@ -1,6 +1,8 @@
 package com.sapronov.todolist;
 
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,12 +15,16 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.sapronov.todolist.data.TodoBaseHelper;
+import com.sapronov.todolist.data.TodoDbSchema;
+
 public class TaskFormFragment extends Fragment {
 
     private View view;
     private int position;
     private EditText name;
     private EditText desc;
+    private SQLiteDatabase store;
 
     @Nullable
     @Override
@@ -29,6 +35,7 @@ public class TaskFormFragment extends Fragment {
         name = view.findViewById(R.id.task_name);
         desc = view.findViewById(R.id.task_desc);
         save.setOnClickListener(this::saveBtn);
+        this.store = new TodoBaseHelper(getContext()).getWritableDatabase();
         if(position!=-1){
             Task task=Store.getStore().get(position);
             name.setText(task.getName());
@@ -52,8 +59,14 @@ public class TaskFormFragment extends Fragment {
             Store.getStore().get(position)
                     .editTask(name.getText().toString(),desc.getText().toString());
         }else {
-            Store.getStore()
-                    .addTask(new Task(name.getText().toString(),desc.getText().toString()));
+            ContentValues values= new ContentValues();
+            values.put(TodoDbSchema.TaskTable.Cols.NAME,name.getText().toString());
+            values.put(TodoDbSchema.TaskTable.Cols.TITLE,desc.getText().toString());
+            values.put(TodoDbSchema.TaskTable.Cols.CLOSED, false);
+            long io;
+            io=store.insert(TodoDbSchema.TaskTable.NAME,null,values);
+            io= store.insert(TodoDbSchema.TaskTable.NAME,null,values);
+            System.out.println(io);
         }
     }
 }

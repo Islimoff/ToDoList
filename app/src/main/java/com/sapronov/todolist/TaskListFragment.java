@@ -60,7 +60,8 @@ public class TaskListFragment extends Fragment {
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             tasks.add(new Task(cursor.getString(cursor.getColumnIndex("name"))
-                    ,cursor.getString(cursor.getColumnIndex("desc"))));
+                    ,cursor.getString(cursor.getColumnIndex("title"))));
+            cursor.moveToNext();
         }
         cursor.close();
         this.recycler.setAdapter(new TaskAdapter(tasks));
