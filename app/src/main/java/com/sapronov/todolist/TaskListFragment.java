@@ -1,6 +1,5 @@
 package com.sapronov.todolist;
 
-import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -59,7 +58,8 @@ public class TaskListFragment extends Fragment {
         );
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
-            tasks.add(new Task(cursor.getString(cursor.getColumnIndex("name"))
+            tasks.add(new Task(cursor.getInt(cursor.getColumnIndex("id"))
+                    ,cursor.getString(cursor.getColumnIndex("name"))
                     ,cursor.getString(cursor.getColumnIndex("title"))));
             cursor.moveToNext();
         }
@@ -123,21 +123,25 @@ public class TaskListFragment extends Fragment {
             createDate.setText(format(task.getCreate()));
             text.setOnClickListener(view -> {
                 FragmentManager fm = getActivity().getSupportFragmentManager();
+                Fragment fragment = new TaskDetailsFragment();
+                Bundle bundle = new Bundle();
+                bundle.putInt("id", task.getId());
+                bundle.putString("name",task.getName());
+                bundle.putString("desc",task.getDesc());
+                fragment.setArguments(bundle);
                 fm.beginTransaction()
-                        .replace(R.id.content, new TaskUpdateFragment())
+                        .replace(R.id.content, fragment)
                         .addToBackStack(null)
                         .commit();
             });
             CheckBox done = holder.view.findViewById(R.id.checkBox);
             done.setChecked(task.getClosed());
             done.setOnCheckedChangeListener(((view, isClosed) -> task.setClosed(isClosed)));
-
         }
 
         private String format(Calendar date) {
             return String.format(Locale.getDefault(), "%02d.%02d.%d",
                     date.get(Calendar.DAY_OF_MONTH), date.get(Calendar.MONTH), date.get(Calendar.YEAR));
-
         }
 
         @Override

@@ -5,16 +5,18 @@ import java.util.Date;
 
 public class Task {
 
+    private int id;
     private String name;
     private String desc;
     private Calendar create;
     private boolean closed;
 
-    public Task(String name, String desc) {
+    public Task(int id, String name, String desc) {
+        this.id = id;
         this.name = name;
         this.desc = desc;
-        closed=false;
-        create=Calendar.getInstance();
+        closed = false;
+        create = Calendar.getInstance();
     }
 
     public String getName() {
@@ -37,8 +39,12 @@ public class Task {
         return create;
     }
 
-    public void editTask(String name,String desc){
+    public void editTask(String name, String desc) {
         this.name = name;
         this.desc = desc;
+    }
+
+    public int getId() {
+        return id;
     }
 }
