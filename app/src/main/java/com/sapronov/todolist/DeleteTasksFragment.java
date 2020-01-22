@@ -1,7 +1,6 @@
 package com.sapronov.todolist;
 
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
@@ -9,14 +8,20 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
 
 public class DeleteTasksFragment extends DialogFragment {
 
-    private  ConfirmDeleteTasksListener callback;
+    private ConfirmDeleteTasksListener callback;
 
     public interface ConfirmDeleteTasksListener {
         void onPositiveDialogClick(DialogFragment dialog);
+
         void onNegativeDialogClick(DialogFragment dialog);
+    }
+
+    public DeleteTasksFragment(Fragment fragment) {
+        this.callback = (ConfirmDeleteTasksListener) fragment;
     }
 
     @NonNull
@@ -38,22 +43,5 @@ public class DeleteTasksFragment extends DialogFragment {
                 })
                 .create();
         return dialog;
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        try {
-            callback = (ConfirmDeleteTasksListener) context;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(String.format("%s must implement ConfirmDeleteExamsListener", context.toString()));
-        }
-
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        callback = null;
     }
 }

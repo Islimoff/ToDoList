@@ -17,7 +17,8 @@ public class TodoBaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(
                 "create table " + TodoDbSchema.TaskTable.NAME + " (" +
-                        "id integer primary key autoincrement, " +
+                        TodoDbSchema.TaskTable.Cols.ID +
+                        "integer primary key autoincrement, " +
                         TodoDbSchema.TaskTable.Cols.NAME + ", " +
                         TodoDbSchema.TaskTable.Cols.TITLE + ", " +
                         TodoDbSchema.TaskTable.Cols.CLOSED + " " +

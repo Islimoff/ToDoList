@@ -1,7 +1,6 @@
 package com.sapronov.todolist;
 
 import java.util.Calendar;
-import java.util.Date;
 
 public class Task {
 
@@ -11,11 +10,10 @@ public class Task {
     private Calendar create;
     private boolean closed;
 
-    public Task(int id, String name, String desc) {
-        this.id = id;
+    public Task(String name, String desc, int closed) {
         this.name = name;
         this.desc = desc;
-        closed = false;
+        this.closed = closed != 0;
         create = Calendar.getInstance();
     }
 
@@ -27,7 +25,7 @@ public class Task {
         return desc;
     }
 
-    public boolean getClosed() {
+    public boolean isClosed() {
         return closed;
     }
 
@@ -39,12 +37,33 @@ public class Task {
         return create;
     }
 
-    public void editTask(String name, String desc) {
-        this.name = name;
-        this.desc = desc;
-    }
-
     public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Task exam = (Task) o;
+        return id == exam.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return id;
+    }
+
+    @Override
+    public String toString() {
+        return "Task{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", desc=" + desc +
+                '}';
     }
 }

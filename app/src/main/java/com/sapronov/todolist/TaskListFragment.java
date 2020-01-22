@@ -1,7 +1,5 @@
 package com.sapronov.todolist;
 
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -14,23 +12,19 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.sapronov.todolist.data.TodoBaseHelper;
-import com.sapronov.todolist.data.TodoDbSchema;
-
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
-public class TaskListFragment extends Fragment {
+public class TaskListFragment extends Fragment implements DeleteTasksFragment.ConfirmDeleteTasksListener {
 
     private RecyclerView recycler;
-    private SQLiteDatabase store;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -44,26 +38,12 @@ public class TaskListFragment extends Fragment {
         View view = inflater.inflate(R.layout.activity_main, container, false);
         recycler = view.findViewById(R.id.items_list);
         recycler.setLayoutManager(new LinearLayoutManager(getActivity()));
-        this.store = new TodoBaseHelper(getContext()).getWritableDatabase();
         updateUI();
         return view;
     }
 
     private void updateUI() {
-        List<Task> tasks = new ArrayList<>();
-        Cursor cursor = this.store.query(
-                TodoDbSchema.TaskTable.NAME,
-                null, null, null,
-                null, null, null
-        );
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            tasks.add(new Task(cursor.getInt(cursor.getColumnIndex("id"))
-                    ,cursor.getString(cursor.getColumnIndex("name"))
-                    ,cursor.getString(cursor.getColumnIndex("title"))));
-            cursor.moveToNext();
-        }
-        cursor.close();
+        List<Task> tasks = SqlStore.getStore(getContext()).getAll();
         this.recycler.setAdapter(new TaskAdapter(tasks));
     }
 
@@ -75,17 +55,32 @@ public class TaskListFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        FragmentManager fm = getFragmentManager();
         switch (item.getItemId()) {
             case R.id.add_item:
-                FragmentManager fm = getActivity().getSupportFragmentManager();
                 fm.beginTransaction()
                         .replace(R.id.content, new TaskFormFragment())
                         .addToBackStack(null)
                         .commit();
                 return true;
+            case R.id.delete_item:
+                DialogFragment dialog = new DeleteTasksFragment(this);
+                dialog.show(fm, "dialog_tag");
+                updateUI();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public void onPositiveDialogClick(DialogFragment dialog) {
+        SqlStore.getStore(getContext()).deleteAll();
+        updateUI();
+    }
+
+    @Override
+    public void onNegativeDialogClick(DialogFragment dialog) {
     }
 
     class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskHolder> {
@@ -126,8 +121,9 @@ public class TaskListFragment extends Fragment {
                 Fragment fragment = new TaskDetailsFragment();
                 Bundle bundle = new Bundle();
                 bundle.putInt("id", task.getId());
-                bundle.putString("name",task.getName());
-                bundle.putString("desc",task.getDesc());
+                bundle.putInt("closed", task.isClosed() ? 1 : 0);
+                bundle.putString("name", task.getName());
+                bundle.putString("desc", task.getDesc());
                 fragment.setArguments(bundle);
                 fm.beginTransaction()
                         .replace(R.id.content, fragment)
@@ -135,8 +131,13 @@ public class TaskListFragment extends Fragment {
                         .commit();
             });
             CheckBox done = holder.view.findViewById(R.id.checkBox);
-            done.setChecked(task.getClosed());
-            done.setOnCheckedChangeListener(((view, isClosed) -> task.setClosed(isClosed)));
+            done.setChecked(task.isClosed());
+            done.setOnCheckedChangeListener(((view, isClosed) -> {
+                task.setClosed(isClosed);
+                SqlStore.getStore(getContext()).update(task);
+            }));
+
+
         }
 
         private String format(Calendar date) {
