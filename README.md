@@ -1,4 +1,5 @@
 # ToDoList
+This is my pet project as part of my mobile development course
 The app has the 5 screens.
 - List of tasks
 
