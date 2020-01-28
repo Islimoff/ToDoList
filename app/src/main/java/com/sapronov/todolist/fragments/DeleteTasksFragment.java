@@ -1,4 +1,4 @@
-package com.sapronov.todolist;
+package com.sapronov.todolist.fragments;
 
 import android.app.Dialog;
 import android.content.DialogInterface;

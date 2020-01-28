@@ -1,12 +1,11 @@
-package com.sapronov.todolist;
+package com.sapronov.todolist.data;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.sapronov.todolist.data.TodoBaseHelper;
-import com.sapronov.todolist.data.TodoDbSchema;
+import com.sapronov.todolist.model.Task;
 import com.sapronov.todolist.data.TodoDbSchema.TaskTable;
 
 import java.util.ArrayList;

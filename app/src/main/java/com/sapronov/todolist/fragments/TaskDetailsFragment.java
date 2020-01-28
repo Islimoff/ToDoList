@@ -1,4 +1,4 @@
-package com.sapronov.todolist;
+package com.sapronov.todolist.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,6 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+
+import com.sapronov.todolist.R;
 
 public class TaskDetailsFragment extends Fragment {
 
