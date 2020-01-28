@@ -49,9 +49,11 @@ public class Task {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Task exam = (Task) o;
-        return id == exam.id;
+        Task task = (Task) o;
+        return this.id == task.id && this.name.equals(task.name) &&
+                this.desc.equals(task.desc) && this.create.equals(task.create);
     }
+
 
     @Override
     public int hashCode() {
