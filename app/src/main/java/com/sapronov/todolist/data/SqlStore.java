@@ -34,17 +34,22 @@ public class SqlStore {
     }
 
     public Task get(int index) {
-        Cursor cursor = store.query(TaskTable.NAME,
-                null, "id = ?",
-                new String[]{String.valueOf(index)},
-                null, null, null);
-        cursor.moveToFirst();
-        Task task = new Task(cursor.getString(cursor.getColumnIndex(TaskTable.Cols.NAME))
-                , cursor.getString(cursor.getColumnIndex(TaskTable.Cols.TITLE)),
-                cursor.getInt(cursor.getColumnIndex(TaskTable.Cols.CLOSED)));
-        task.setId(cursor.getInt(cursor.getColumnIndex(TaskTable.Cols.ID)));
-        cursor.moveToNext();
-        cursor.close();
+        Cursor cursor = null;
+        Task task = null;
+        try {
+            cursor = store.query(TaskTable.NAME,
+                    null, "id = ?",
+                    new String[]{String.valueOf(index)},
+                    null, null, null);
+            cursor.moveToFirst();
+            task = new Task(cursor.getString(cursor.getColumnIndex(TaskTable.Cols.NAME))
+                    , cursor.getString(cursor.getColumnIndex(TaskTable.Cols.TITLE)),
+                    cursor.getInt(cursor.getColumnIndex(TaskTable.Cols.CLOSED)));
+            task.setId(cursor.getInt(cursor.getColumnIndex(TaskTable.Cols.ID)));
+            cursor.moveToNext();
+        } finally {
+            cursor.close();
+        }
         return task;
     }
 
@@ -59,22 +64,26 @@ public class SqlStore {
 
     public List<Task> getAll() {
         List<Task> tasks = new ArrayList<>();
-        Cursor cursor = this.store.query(
-                TaskTable.NAME,
-                null, null, null,
-                null, null, null
-        );
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            Task task = new Task(cursor.getString(cursor.getColumnIndex(TaskTable.Cols.NAME))
-                    , cursor.getString(cursor.getColumnIndex(TaskTable.Cols.TITLE)),
-                    cursor.getInt(cursor.getColumnIndex(TaskTable.Cols.CLOSED)));
-            task.setId(cursor.getInt(cursor.getColumnIndex(TaskTable.Cols.ID)));
-            tasks.add(task);
+        Cursor cursor = null;
+        try {
+            cursor = this.store.query(
+                    TaskTable.NAME,
+                    null, null, null,
+                    null, null, null
+            );
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()) {
+                Task task = new Task(cursor.getString(cursor.getColumnIndex(TaskTable.Cols.NAME))
+                        , cursor.getString(cursor.getColumnIndex(TaskTable.Cols.TITLE)),
+                        cursor.getInt(cursor.getColumnIndex(TaskTable.Cols.CLOSED)));
+                task.setId(cursor.getInt(cursor.getColumnIndex(TaskTable.Cols.ID)));
+                tasks.add(task);
 
-            cursor.moveToNext();
+                cursor.moveToNext();
+            }
+        } finally {
+            cursor.close();
         }
-        cursor.close();
         return tasks;
     }
 
