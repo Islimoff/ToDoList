@@ -21,6 +21,10 @@ public class Task {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public String getDesc() {
         return desc;
     }
@@ -35,6 +39,10 @@ public class Task {
 
     public Calendar getCreate() {
         return create;
+    }
+
+    public void setCreate(Calendar create) {
+        this.create = create;
     }
 
     public int getId() {
