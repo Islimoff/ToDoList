@@ -53,6 +53,10 @@ public class Task {
         this.id = id;
     }
 
+    public String getPhotoFilename() {
+        return "IMG_" + this.getId() + ".jpg";
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

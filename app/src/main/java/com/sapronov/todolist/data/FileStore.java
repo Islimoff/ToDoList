@@ -48,7 +48,7 @@ public class FileStore implements IStore {
 
     @Override
     public Task get(int index) {
-        Task task = new Task(null, null,0);
+        Task task = new Task(null, null, 0);
         File file = new File(context.getFilesDir(), index + ".txt");
         try (BufferedReader in = new BufferedReader(new FileReader(file))) {
             task.setName(in.readLine());
@@ -60,5 +60,10 @@ public class FileStore implements IStore {
             e.printStackTrace();
         }
         return task;
+    }
+
+    public File getPhotoFile(Task task) {
+        File filesDir = context.getFilesDir();
+        return new File(filesDir, task.getPhotoFilename());
     }
 }
