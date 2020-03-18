@@ -21,7 +21,8 @@ public class TodoBaseHelper extends SQLiteOpenHelper {
                         " integer primary key autoincrement, " +
                         TodoDbSchema.TaskTable.Cols.NAME + ", " +
                         TodoDbSchema.TaskTable.Cols.TITLE + ", " +
-                        TodoDbSchema.TaskTable.Cols.CLOSED + " " +
+                        TodoDbSchema.TaskTable.Cols.CLOSED + ", " +
+                        TodoDbSchema.TaskTable.Cols.PHOTO_URI + " " +
                         ")"
         );
     }

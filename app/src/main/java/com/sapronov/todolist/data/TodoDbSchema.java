@@ -11,6 +11,7 @@ public class TodoDbSchema {
             public static final String NAME = "name";
             public static final String TITLE = "title";
             public static final String CLOSED = "closed";
+            public static final String PHOTO_URI ="photoUri" ;
         }
     }
 }

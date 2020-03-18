@@ -1,5 +1,6 @@
 package com.sapronov.todolist.fragments;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -8,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -118,7 +120,9 @@ public class TaskListFragment extends Fragment implements DeleteTasksFragment.Co
             final Task task = tasks.get(position);
             TextView text = holder.view.findViewById(R.id.info);
             TextView createDate = holder.view.findViewById(R.id.create_date);
+            ImageView photo=holder.view.findViewById(R.id.photo_holder);
             text.setText(task.getName());
+            photo.setImageURI(Uri.parse(task.getPhotoUri()));
             createDate.setText(format(task.getCreate()));
             text.setOnClickListener(view -> {
                 FragmentManager fm = getActivity().getSupportFragmentManager();
@@ -128,6 +132,7 @@ public class TaskListFragment extends Fragment implements DeleteTasksFragment.Co
                 bundle.putInt("closed", task.isClosed() ? 1 : 0);
                 bundle.putString("name", task.getName());
                 bundle.putString("desc", task.getDesc());
+                bundle.putString("photoUri",task.getPhotoUri());
                 fragment.setArguments(bundle);
                 fm.beginTransaction()
                         .replace(R.id.content, fragment)

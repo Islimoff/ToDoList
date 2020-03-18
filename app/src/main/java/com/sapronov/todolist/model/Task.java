@@ -8,13 +8,15 @@ public class Task {
     private String name;
     private String desc;
     private Calendar create;
+    private String photoUri;
     private boolean closed;
 
-    public Task(String name, String desc, int closed) {
+    public Task(String name, String desc,String photoUri, int closed) {
         this.name = name;
         this.desc = desc;
+        this.photoUri=photoUri;
         this.closed = closed != 0;
-        create = Calendar.getInstance();
+        this.create = Calendar.getInstance();
     }
 
     public String getName() {
@@ -53,8 +55,12 @@ public class Task {
         this.id = id;
     }
 
-    public String getPhotoFilename() {
-        return "IMG_" + this.getId() + ".jpg";
+    public String getPhotoUri() {
+        return photoUri;
+    }
+
+    public void setPhotoUri(String photoUri) {
+        this.photoUri = photoUri;
     }
 
     @Override

@@ -42,10 +42,7 @@ public class SqlStore {
                     new String[]{String.valueOf(index)},
                     null, null, null);
             cursor.moveToFirst();
-            task = new Task(cursor.getString(cursor.getColumnIndex(TaskTable.Cols.NAME))
-                    , cursor.getString(cursor.getColumnIndex(TaskTable.Cols.TITLE)),
-                    cursor.getInt(cursor.getColumnIndex(TaskTable.Cols.CLOSED)));
-            task.setId(cursor.getInt(cursor.getColumnIndex(TaskTable.Cols.ID)));
+            task = getTask(cursor);
             cursor.moveToNext();
         } finally {
             cursor.close();
@@ -62,6 +59,23 @@ public class SqlStore {
         store.delete(TaskTable.NAME, null, null);
     }
 
+    public Task getById(int id) {
+        Cursor cursor = null;
+        Task task = null;
+        try {
+            cursor = store.query(
+                    TaskTable.NAME,
+                    null, "id = " + id, null,
+                    null, null, null
+            );
+            cursor.moveToFirst();
+            task = getTask(cursor);
+        } finally {
+            cursor.close();
+        }
+        return task;
+    }
+
     public List<Task> getAll() {
         List<Task> tasks = new ArrayList<>();
         Cursor cursor = null;
@@ -73,12 +87,7 @@ public class SqlStore {
             );
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {
-                Task task = new Task(cursor.getString(cursor.getColumnIndex(TaskTable.Cols.NAME))
-                        , cursor.getString(cursor.getColumnIndex(TaskTable.Cols.TITLE)),
-                        cursor.getInt(cursor.getColumnIndex(TaskTable.Cols.CLOSED)));
-                task.setId(cursor.getInt(cursor.getColumnIndex(TaskTable.Cols.ID)));
-                tasks.add(task);
-
+                tasks.add(getTask(cursor));
                 cursor.moveToNext();
             }
         } finally {
@@ -87,10 +96,20 @@ public class SqlStore {
         return tasks;
     }
 
+    private Task getTask(Cursor cursor) {
+        Task task = new Task(cursor.getString(cursor.getColumnIndex(TaskTable.Cols.NAME))
+                , cursor.getString(cursor.getColumnIndex(TaskTable.Cols.TITLE))
+                , cursor.getString(cursor.getColumnIndex(TaskTable.Cols.PHOTO_URI)),
+                cursor.getInt(cursor.getColumnIndex(TaskTable.Cols.CLOSED)));
+        task.setId(cursor.getInt(cursor.getColumnIndex(TaskTable.Cols.ID)));
+        return task;
+    }
+
     private ContentValues getContentValues(Task task) {
         ContentValues values = new ContentValues();
         values.put(TaskTable.Cols.NAME, task.getName());
         values.put(TaskTable.Cols.TITLE, task.getDesc());
+        values.put(TaskTable.Cols.PHOTO_URI, task.getPhotoUri());
         values.put(TaskTable.Cols.CLOSED, task.isClosed() ? 1 : 0);
         return values;
     }
