@@ -114,6 +114,9 @@ public class TaskFormFragment extends Fragment {
     }
 
     private void selectedVariant() {
+        if(photoURI==null){
+            photoURI=Uri.EMPTY;
+        }
         if (args != null) {
             Task task = new Task(name.getText().toString(),
                     desc.getText().toString(),photoURI.toString(), args.getInt("closed"));
